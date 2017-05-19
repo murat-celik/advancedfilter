@@ -4,7 +4,7 @@ Configuration
 
 Add Filter component to application components
 ```php
-  'aliases' => [
+ 'aliases' => [
         '@advancedfilter' => '@vendor/advancedfilter',
   ],
  'components' => [
@@ -86,7 +86,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 ?>
 
-<?php Yii::$app->filter->draw($searchModel->filters); ?>
+<?= Yii::$app->filter->draw($searchModel->filters); ?>
 
 <div class="post-index">
     <?=
