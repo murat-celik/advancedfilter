@@ -12,6 +12,8 @@ $form = ActiveForm::begin([
             'method' => 'GET',
             'action' => Url::toRoute(\Yii::$app->request->getPathInfo())
         ]);
+
+
 ?>
 <div class="panel panel-default">
     <?php if (isset($panelTitle) && strlen($panelTitle) > 0): ?>
@@ -29,7 +31,9 @@ $form = ActiveForm::begin([
     </div>
 
     <div class="panel-footer">
-        <?php echo Html::submitButton('Search', ['class' => 'btn btn-primary btn-xs']) . '   ' . Html::resetButton('Reset', ['class' => 'btn btn-default btn-xs']); ?>
+        <?= Html::submitButton('Search', ['class' => 'btn btn-primary btn-xs']); ?>
+        <?= Html::button('Refresh', ['class' => 'btn btn-info btn-xs','onclick'=>"location.href='".Url::toRoute(\Yii::$app->request->getPathInfo())."'"]) ?>
+        <?= Html::resetButton('Reset', ['class' => 'btn btn-default btn-xs']); ?>
     </div>
 </div>
 
