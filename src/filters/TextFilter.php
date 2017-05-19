@@ -14,8 +14,7 @@ class TextFilter extends Filter
 {
 
     /**
-     *
-     * @var type Boolean
+     * @var Boolean
      */
     public $escape = false;
 

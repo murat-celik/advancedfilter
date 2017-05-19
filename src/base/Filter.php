@@ -11,31 +11,26 @@ abstract class Filter
 {
 
     /**
-     *
-     * @var type string
+     * @var string
      */
     public $id;
 
     /**
-     *
-     * @var type \yii\db\ActiveRecord
+     * @var \yii\db\ActiveRecord
      */
     public $model;
 
     /**
-     *
-     * @var type string
+     * @var string
      */
     public $attribute;
 
     /**
-     *
-     * @var type array();
+     * @var array
      */
     public $options;
 
     /**
-     *
      * @var yii\db\ActiveQuery; 
      */
     public $activeQuery;
