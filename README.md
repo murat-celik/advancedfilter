@@ -4,11 +4,14 @@ Configuration
 
 Add Filter component to application components
 ```php
+  'aliases' => [
+        '@advancedfilter' => '@vendor/advancedfilter',
+  ],
  'components' => [
-        'filter' => [
-            'class' => 'vendor\advancedfilter\components\FilterComponent',
-        ],
-    ]
+        'filter'=> function () {
+            return new advancedfilter\src\components\FilterComponent();
+        },
+  ]
 ```
 Usage
 1) Define Property in Your SearchModel

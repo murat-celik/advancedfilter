@@ -1,6 +1,6 @@
 <?php
 
-namespace advancedfilter\components;
+namespace advancedfilter\src\components;
 
 use Yii;
 use yii\base\Component;
@@ -33,12 +33,11 @@ class FilterComponent extends Component
         $this->panelTitle = $panelTitle;
         $this->columnCount = $columnCount;
 
-        $file = Yii::$app->basePath . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'advancedfilter' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . '_filter_panel_form.php';
-        echo Yii::$app->controller->renderFile($file, array(
-            'panelTitle' => $this->panelTitle,
-            'filters' => $this->filters,
-            'columnCount' => $this->columnCount
-                )
+        $file = Yii::$app->basePath . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'advancedfilter' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . '_filter_panel_form.php';
+        return Yii::$app->controller->renderFile($file, array(
+                    'panelTitle' => $this->panelTitle,
+                    'filters' => $this->filters,
+                    'columnCount' => $this->columnCount)
         );
     }
 
