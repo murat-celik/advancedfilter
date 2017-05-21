@@ -6,28 +6,31 @@ use advancedfilter\src\base\Filter;
 use yii\helpers\Html;
 
 /**
- * Description of NumericFilter
+ * Description of DateFilter
  *
  * @author Murat Çelik
  */
-class NumericFilter extends Filter
+class DateFilter extends Filter
 {
 
     public function __construct($model, $attribute, $activeQuery, $options = array()) {
         if (!empty($options)) {
-            $options = array_merge($options, array('class' => 'form-control input-sm', 'type' => 'number'));
+            $options = array_merge($options, array('class' => 'form-control input-sm', 'type' => 'date'));
         } else {
-            $options = array('class' => 'form-control input-sm', 'type' => 'number');
+            $options = array('class' => 'form-control input-sm', 'type' => 'date');
         }
         parent::__construct($model, $attribute, $activeQuery, $options);
-
     }
 
     public function drawFilter() {
         return Html::activeTextInput($this->model, $this->attribute, $this->options);
     }
 
-    public function executeFilter() {
+    public function executeFilter(){
+        if (isset($this->model->{$this->attribute})) {
+            $this->model->{$this->attribute} = date('Y-m-d', strtotime($this->model->{$this->attribute}));
+        }
+
         return $this->activeQuery->andFilterCompare($this->attribute, $this->model->{$this->attribute});
     }
 
