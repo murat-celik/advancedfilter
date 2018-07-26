@@ -18,8 +18,8 @@ class TextFilter extends Filter
      */
     public $escape = false;
 
-    public function __construct($model, $attribute, $activeQuery, $escape = false, $options = array('class' => 'form-control input-sm')) {
-        parent::__construct($model, $attribute, $activeQuery, $options);
+    public function __construct($model, $attribute, $escape = false, $options = array('class' => 'form-control input-sm') ) {
+        parent::__construct($model, $attribute, $options);
         $this->escape = $escape;
     }
 
@@ -28,11 +28,11 @@ class TextFilter extends Filter
         return Html::activeTextInput($this->model, $this->attribute, $this->options);
     }
 
-    public function executeFilter() {
+    public function executeQuery($activeQuery) {
         if ($this->escape == true) {
-            return $this->activeQuery->andFilterWhere(['like', $this->attribute, $this->model->{$this->attribute}]);
+            return $activeQuery->andFilterWhere(['like', $this->attribute, $this->model->{$this->attribute}]);
         }
-        return $this->activeQuery->andFilterCompare($this->attribute, $this->model->{$this->attribute});
+        return $activeQuery->andFilterCompare($this->attribute, $this->model->{$this->attribute});
     }
 
 }

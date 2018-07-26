@@ -17,8 +17,8 @@ class BooleanFilter extends Filter
         return Html::activeCheckbox($this->model, $this->attribute, $this->options);
     }
 
-    public function executeFilter() {
-        return $this->activeQuery->andFilterCompare($this->attribute, $this->model->{$this->attribute});
+    public function executeQuery($activeQuery) {
+        return $activeQuery->andFilterCompare($this->attribute, $this->model->{$this->attribute});
     }
 
 }

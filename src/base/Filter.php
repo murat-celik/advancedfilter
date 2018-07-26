@@ -32,22 +32,17 @@ abstract class Filter
      */
     public $options;
 
-    /**
-     * @var yii\db\ActiveQuery; 
-     */
-    public $activeQuery;
 
-    public function __construct($model, $attribute, $activeQuery, $options = array()) {
+    public function __construct($model, $attribute, $options = array()) {
         $this->id = $attribute;
         $this->model = $model;
         $this->attribute = $attribute;
-        $this->activeQuery = $activeQuery;
         $this->options = $options;
     }
 
     abstract public function renderFilter();
 
-    abstract public function executeFilter();
+    abstract public function executeQuery($activeQuery);
 
     public function getAttributeLabel(){
         return  Html::activeLabel($this->model,$this->attribute);

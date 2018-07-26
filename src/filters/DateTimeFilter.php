@@ -13,24 +13,24 @@ use yii\helpers\Html;
 class DateTimeFilter extends Filter
 {
 
-    public function __construct($model, $attribute, $activeQuery, $options = array()) {
+    public function __construct($model, $attribute, $options = array()) {
         if (!empty($options)) {
-            $options = array_merge($options, array('class' => 'form-control input-sm', 'type' => 'datetime-local'));
+            $options = array_merge($options, array('class' => 'form-control input-sm'));
         } else {
-            $options = array('class' => 'form-control input-sm', 'type' => 'date');
+            $options = array('class' => 'form-control input-sm');
         }
-        parent::__construct($model, $attribute, $activeQuery, $options);
+        parent::__construct($model, $attribute, $options);
     }
 
     public function renderFilter() {
-        return Html::activeTextInput($this->model, $this->attribute, $this->options);
+        return Html::activeInput('datetime-local', $this->model, $this->attribute, $this->options);
     }
 
-    public function executeFilter(){
+    public function executeQuery($activeQuery){
         if (isset($this->model->{$this->attribute})) {
-            $this->model->{$this->attribute} = date('Y-m-d', strtotime($this->model->{$this->attribute}));
+            $this->model->{$this->attribute} = date('Y-m-d H:i', strtotime($this->model->{$this->attribute}));
         }
-        return $this->activeQuery->andFilterCompare($this->attribute, $this->model->{$this->attribute});
+        return $activeQuery->andFilterCompare($this->attribute, $this->model->{$this->attribute});
     }
 
 }
