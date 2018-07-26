@@ -68,7 +68,7 @@ class FilterFacade
 
     public function addDropDownFilter($attribute, $items = array())
     {
-        $this->_filters[$attribute] = new filters\DropdownFilter($this->_model, '$attribute', $items);
+        $this->_filters[$attribute] = new filters\DropdownFilter($this->_model, $attribute, $items);
     }
 
     public function addTimeFilter($attribute)

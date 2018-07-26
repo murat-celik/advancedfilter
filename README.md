@@ -2,7 +2,7 @@
 
 Configuration
 
-Add Filter component to application components
+Add Filter alias and Component to application config 
 ```php
  'aliases' => [
         '@advancedfilter' => '@vendor/advancedfilter',
@@ -14,22 +14,21 @@ Add Filter component to application components
   ]
 ```
 Usage
-1) Define Property in Your SearchModel
+1) Define Property FilterFacade in Your SearchModel
 
 ```php
  class PostSearch extends Post{
      
     /**
-     * @var \advancedfilter\src\base\Filter[]
+     * @var \advancedfilter\src\FilterFacade
      */  
-    public $filters = array();
+    public $filter = array();
 
 }
 ```
-2) Use what you want filter, in your search function
+2) Which filter do you want to add, in your search function
 
 ```php
-use advancedfilter\src\filters;
 
 class PostSearch extends Post{
      
@@ -51,12 +50,15 @@ class PostSearch extends Post{
             return $dataProvider;
         }
         
-        $this->filters['title'] = new filters\TextFilter($this, 'title', $query);
-        $this->filters['id_post'] = new filters\NumericFilter($this, 'id_post', $query);
+        $this->filter =  new \advancedfilter\src\FilterFacade($this,$query);
+        
+        $this->filter->addNumericFilter('id_post');
+        $this->filter->addDropDownFilter('id_category', array(1=>'Sea',2=>'Mountain'));
+        $this->filter->addTextFilter('title');
+        $this->filter->addDateFilter('date_add');
+        $this->filter->addDateTimeFilter('datetime_publish');
 
-        foreach ($this->filters as $key => $filter) {
-            $query = $filter->executeFilter();
-        }
+        $dataProvider->query = $this->filter->getQuery();
 
         return $dataProvider;
     }
@@ -78,7 +80,7 @@ class PostController extends Controller
     }
 }
 ```
-3) In view file call filter component 
+3) In view file call filter component, for render html inputs
 ```php
 <?php
 
@@ -86,7 +88,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 ?>
 
-<?= Yii::$app->filter->render($searchModel->filters); ?>
+<?= Yii::$app->filter->render($searchModel->filter->getFilters()); ?>
 
 <div class="post-index">
     <?=
