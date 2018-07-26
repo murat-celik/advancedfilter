@@ -3,6 +3,7 @@
 
 namespace advancedfilter\src;
 
+use Yii;
 use advancedfilter\src\filters;
 
 class FilterFacade
@@ -49,14 +50,15 @@ class FilterFacade
         }
     }
 
-    public function getFilters()
+    public function render($panelTitle = '', $columnCount = 3)
     {
-        return $this->_filters;
+        $view_file = Yii::$app->basePath . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'advancedfilter' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . '_filter_panel_form.php';
+        return Yii::$app->controller->renderFile($view_file, array('panelTitle' => $panelTitle, 'columnCount' => $columnCount, 'filters' => $this->_filters));
     }
 
     #region Add Filter Functions
 
-    public function addTextFilter($attribute, $escape =false)
+    public function addTextFilter($attribute, $escape = false)
     {
         $this->_filters[$attribute] = new filters\TextFilter($this->_model, $attribute, $escape);
     }

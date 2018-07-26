@@ -2,16 +2,11 @@
 
 Configuration
 
-Add Filter alias and Component to application config 
+Add alias to application config 
 ```php
  'aliases' => [
         '@advancedfilter' => '@vendor/advancedfilter',
   ],
- 'components' => [
-        'filter'=> function () {
-            return new advancedfilter\src\components\FilterComponent();
-        },
-  ]
 ```
 Usage
 1) Define Property FilterFacade in Your SearchModel
@@ -80,7 +75,7 @@ class PostController extends Controller
     }
 }
 ```
-3) In view file call filter component, for render html inputs
+3) In view file render html inputs
 ```php
 <?php
 
@@ -88,7 +83,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 ?>
 
-<?= Yii::$app->filter->render($searchModel->filter->getFilters()); ?>
+<?= $searchModel->filter->render('My Filter Panel',4) ?>
 
 <div class="post-index">
     <?=
