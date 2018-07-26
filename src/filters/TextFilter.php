@@ -23,7 +23,7 @@ class TextFilter extends Filter
         $this->escape = $escape;
     }
 
-    public function drawFilter() {
+    public function renderFilter() {
 
         return Html::activeTextInput($this->model, $this->attribute, $this->options);
     }

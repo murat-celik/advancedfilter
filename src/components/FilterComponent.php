@@ -28,17 +28,14 @@ class FilterComponent extends Component
      */
     public $columnCount;
 
-    public function draw($filters, $panelTitle = '', $columnCount = 4) {
+    public function render($filters, $panelTitle = '', $columnCount = 4)
+    {
         $this->filters = $filters;
         $this->panelTitle = $panelTitle;
         $this->columnCount = $columnCount;
 
-        $file = Yii::$app->basePath . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'advancedfilter' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . '_filter_panel_form.php';
-        return Yii::$app->controller->renderFile($file, array(
-                    'panelTitle' => $this->panelTitle,
-                    'filters' => $this->filters,
-                    'columnCount' => $this->columnCount)
-        );
+        $view_file = Yii::$app->basePath . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'advancedfilter' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . '_filter_panel_form.php';
+        return Yii::$app->controller->renderFile($view_file, array('panelTitle' => $this->panelTitle, 'filters' => $this->filters, 'columnCount' => $this->columnCount));
     }
 
 }

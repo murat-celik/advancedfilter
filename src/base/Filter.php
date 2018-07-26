@@ -2,6 +2,8 @@
 
 namespace advancedfilter\src\base;
 
+use yii\helpers\Html;
+
 /**
  * Description of Filter
  *
@@ -43,7 +45,11 @@ abstract class Filter
         $this->options = $options;
     }
 
-    abstract public function drawFilter();
+    abstract public function renderFilter();
 
     abstract public function executeFilter();
+
+    public function getAttributeLabel(){
+        return  Html::activeLabel($this->model,$this->attribute);
+    }
 }

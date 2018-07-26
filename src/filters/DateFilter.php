@@ -22,7 +22,7 @@ class DateFilter extends Filter
         parent::__construct($model, $attribute, $activeQuery, $options);
     }
 
-    public function drawFilter() {
+    public function renderFilter() {
         return Html::activeTextInput($this->model, $this->attribute, $this->options);
     }
 

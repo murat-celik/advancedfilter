@@ -86,7 +86,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 ?>
 
-<?= Yii::$app->filter->draw($searchModel->filters); ?>
+<?= Yii::$app->filter->render($searchModel->filters); ?>
 
 <div class="post-index">
     <?=

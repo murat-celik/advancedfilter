@@ -13,7 +13,7 @@ use yii\helpers\Html;
 class BooleanFilter extends Filter
 {
 
-    public function drawFilter() {
+    public function renderFilter() {
         return Html::activeCheckbox($this->model, $this->attribute, $this->options);
     }
 

@@ -23,7 +23,7 @@ class DropdownFilter extends Filter
         $this->items = $items;
     }
 
-    public function drawFilter() {
+    public function renderFilter() {
         return Html::activeDropDownList($this->model, $this->attribute, $this->items, $this->options);
     }
 
