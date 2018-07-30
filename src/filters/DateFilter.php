@@ -14,16 +14,11 @@ class DateFilter extends Filter
 {
 
     public function __construct($model, $attribute, $options = array()) {
-        if (!empty($options)) {
-            $options = array_merge($options, array('class' => 'form-control input-sm', 'type' => 'date'));
-        } else {
-            $options = array('class' => 'form-control input-sm', 'type' => 'date');
-        }
         parent::__construct($model, $attribute, $options);
     }
 
     public function renderFilter() {
-        return Html::activeTextInput($this->model, $this->attribute, $this->options);
+        return Html::activeInput('date', $this->model, $this->attribute, $this->options);
     }
 
     public function executeQuery($activeQuery){
@@ -33,5 +28,4 @@ class DateFilter extends Filter
 
         return $activeQuery->andFilterCompare($this->attribute, $this->model->{$this->attribute});
     }
-
 }

@@ -58,35 +58,46 @@ class FilterFacade
 
     #region Add Filter Functions
 
-    public function addTextFilter($attribute, $escape = false)
+    public function addBooleanFilter($attribute, $options = array())
     {
-        $this->_filters[$attribute] = new filters\TextFilter($this->_model, $attribute, $escape);
+        $this->_filters[$attribute] = new filters\BooleanFilter($this->_model, $attribute, $options);
     }
 
-    public function addNumericFilter($attribute)
+    public function addDateFilter($attribute, $options = array())
     {
-        $this->_filters[$attribute] = new filters\NumericFilter($this->_model, $attribute);
+        $this->_filters[$attribute] = new filters\DateFilter($this->_model, $attribute, $options);
     }
 
-    public function addDropDownFilter($attribute, $items = array())
+    public function addDateTimeFilter($attribute, $options = array())
     {
-        $this->_filters[$attribute] = new filters\DropdownFilter($this->_model, $attribute, $items);
+        $this->_filters[$attribute] = new filters\DateTimeFilter($this->_model, $attribute, $options);
     }
 
-    public function addTimeFilter($attribute)
+    public function addDropDownFilter($attribute, $items = array(), $options = array())
     {
-        $this->_filters[$attribute] = new filters\TimeFilter($this->_model, $attribute);
+        $this->_filters[$attribute] = new filters\DropdownFilter($this->_model, $attribute, $items, $options);
     }
 
-    public function addDateFilter($attribute)
+    public function addNumericFilter($attribute, $options = array())
     {
-        $this->_filters[$attribute] = new filters\DateFilter($this->_model, $attribute);
+        $this->_filters[$attribute] = new filters\NumericFilter($this->_model, $attribute, $options);
     }
 
-    public function addDateTimeFilter($attribute)
+    public function addTextFilter($attribute, $escape = false, $options = array())
     {
-        $this->_filters[$attribute] = new filters\DateTimeFilter($this->_model, $attribute);
+        $this->_filters[$attribute] = new filters\TextFilter($this->_model, $attribute, $escape, $options);
     }
+
+    public function addTextRelationFilter($attribute, $escape = false, $options = array())
+    {
+        $this->_filters[$attribute] = new filters\TextRelationFilter($this->_model, $attribute, $escape, $options);
+    }
+
+    public function addTimeFilter($attribute, $options = array())
+    {
+        $this->_filters[$attribute] = new filters\TimeFilter($this->_model, $attribute, $options);
+    }
+
 
     #endregion
 }

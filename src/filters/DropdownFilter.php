@@ -18,17 +18,17 @@ class DropdownFilter extends Filter
      */
     public $items = array();
 
-    public function __construct($model, $attribute, $items = array(), $options = array('class' => 'form-control input-sm')) {
+    public function __construct($model, $attribute, $items = array(), $options) {
         parent::__construct($model, $attribute, $options);
         $this->items = $items;
     }
 
     public function renderFilter() {
-        return Html::activeDropDownList($this->model, $this->attribute, $this->items, $this->options);
+        return Html::activeDropDownList($this->model, $this->getAttribute(), $this->items, $this->options);
     }
 
     public function executeQuery($activeQuery) {
-        return $activeQuery->andFilterCompare($this->attribute, $this->model->{$this->attribute});
+        return $activeQuery->andFilterCompare($this->attribute, $this->model->{$this->getAttribute()});
     }
 
 }
