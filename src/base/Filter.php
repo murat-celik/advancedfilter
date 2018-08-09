@@ -2,6 +2,7 @@
 
 namespace advancedfilter\src\base;
 
+use Yii;
 use yii\helpers\Html;
 
 /**
@@ -11,12 +12,6 @@ use yii\helpers\Html;
  */
 abstract class Filter
 {
-
-    /**
-     * @var string
-     */
-    public $id;
-
     /**
      * @var \yii\db\ActiveRecord
      */
@@ -32,24 +27,38 @@ abstract class Filter
      */
     public $options;
 
+    /**
+     * @var string
+     */
+    private $_modelName = null;
 
-    private $_modelName;
-
+    /**
+     * Filter constructor.
+     * @param $model
+     * @param $attribute
+     * @param array $options
+     */
     public function __construct($model, $attribute, $options = array())
     {
-        $this->id = $attribute;
         $this->model = $model;
         $this->attribute = $attribute;
         $this->options = $options;
     }
 
+    /**
+     * @return string
+     */
     abstract public function renderFilter();
 
+    /**
+     * @param $activeQuery yii\db\ActiveQuery;
+     * @return yii\db\ActiveQuery;
+     */
     abstract public function executeQuery($activeQuery);
 
     public function getAttributeLabel()
     {
-        return Html::activeLabel($this->model, $this->getAttribute());
+        return Html::activeLabel($this->model, str_replace('t.','',$this->getAttribute(true)) );
     }
 
     public function getModelName()
@@ -57,12 +66,16 @@ abstract class Filter
         if (isset($this->_modelName) == false) {
             $this->_modelName = (new \ReflectionClass($this->model))->getShortName();
         }
+
         return $this->_modelName;
     }
 
+    /**
+     * @return string
+     */
     public function getInputName()
     {
-        return $this->_modelName . '[' . $this->attribute . ']';
+        return $this->getModelName() . '[' . $this->attribute . ']';
     }
 
     /**
@@ -71,12 +84,18 @@ abstract class Filter
      */
     public function getInputValue()
     {
-        return isset($_GET[$this->getModelName()][$this->attribute]) ? $_GET[$this->getModelName()][$this->attribute] : '';
+        if (isset($_GET[$this->getModelName()][$this->attribute])){
+            $value =  strip_tags($_GET[$this->getModelName()][$this->attribute]);
+            //$value = Yii::$app->db->quoteValue($value);
+            return $value;
+        }
+        return null;
     }
 
-
     /**
-     * Return
+     * when attribute = post.author.user.fullname will return fullname
+     * when $full  = true will return  post.author.user.fullname
+     * @param bool $full
      * @return string
      */
     public function getAttribute($full = false)
@@ -87,6 +106,10 @@ abstract class Filter
         return end($temp_array);
     }
 
+    /**
+     * when attribute = post.author.user.fullname will  return array( 'post','post.author','post.author.user')
+     * @return array
+     */
     public function getRelations()
     {
         $relations = explode('.', $this->attribute);
@@ -104,19 +127,28 @@ abstract class Filter
                 }
             }
         }
+
         return $data;
     }
 
+    /**
+     * when attribute = post.author.user.fullname will return return user
+     * @return string
+     */
     public function getActiveRelation()
     {
-        $relations = explode('.', $this->attribute); //category.country.id_country
+        $relations = explode('.', $this->attribute);
         $last_item = end($relations);
-        $key = array_search($last_item, $relations);
-        unset($relations[$key]); //unset $id_country
-        return end($relations); // country
+        $last_item_key = array_search($last_item, $relations);
+        unset($relations[$last_item_key]); //unset id_country
 
+        return end($relations); // country
     }
 
+    /**
+     * when attribute = post.author.user.fullname will user.fullname
+     * @return string
+     */
     public function getAttributeWithActiveRelation()
     {
         return $this->getActiveRelation() . '.' . $this->getAttribute();
