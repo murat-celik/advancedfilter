@@ -12,14 +12,8 @@ use yii\helpers\Html;
  */
 class NumericFilter extends Filter
 {
-
-    public function __construct($model, $attribute, $options = array()) {
-        parent::__construct($model, $attribute, $options);
-
-    }
-
     public function renderFilter() {
-        return Html::activeInput('number', $this->model, $this->attribute, $this->options);
+        return Html::input('number', $this->getInputName(), $this->getInputValue(), $this->options);
     }
 
     public function executeQuery($activeQuery) {

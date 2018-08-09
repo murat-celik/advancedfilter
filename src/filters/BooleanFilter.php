@@ -15,7 +15,7 @@ class BooleanFilter extends Filter
 
     public function renderFilter() {
         $this->options['label']='';
-        return Html::activeCheckbox($this->model,$this->attribute, $this->options);
+        return Html::activeCheckbox($this->model,$this->getAttribute(true), $this->options);
     }
 
     public function executeQuery($activeQuery) {

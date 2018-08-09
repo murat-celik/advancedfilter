@@ -12,7 +12,6 @@ use yii\helpers\Html;
  */
 class TextFilter extends Filter
 {
-
     /**
      * @var Boolean
      */
@@ -26,16 +25,16 @@ class TextFilter extends Filter
 
     public function renderFilter()
     {
-
-        return Html::activeTextInput($this->model, $this->attribute, $this->options);
+        return Html::input('text', $this->getInputName(), $this->getInputValue(), $this->options);
     }
 
     public function executeQuery($activeQuery)
     {
         if ($this->escape == true) {
-            return $activeQuery->andFilterWhere(['like', $this->attribute, $this->model->{$this->attribute}]);
+            return $activeQuery->joinWith($this->getRelations(),true)->andFilterWhere(['like', $this->getAttributeWithActiveRelation(), $this->getInputValue()]);
         }
-        return $activeQuery->andFilterCompare($this->attribute, $this->model->{$this->attribute});
-    }
+        $activeQuery->joinWith($this->getRelations())->andFilterCompare($this->getAttributeWithActiveRelation(), $this->getInputValue());
 
+        return $activeQuery;// exit;
+    }
 }

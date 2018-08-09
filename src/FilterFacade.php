@@ -30,33 +30,46 @@ class FilterFacade
         $this->_query = $query;
     }
 
+    /**
+     * @return \yii\db\ActiveRecord
+     */
     public function getModel()
     {
         return $this->_model;
     }
 
+    /**
+     * @return Yii\db\ActiveQuery
+     */
     public function getQuery()
     {
-        $this->executeQuery();
-
-        return $this->_query;
+        return $this->executeQuery();
     }
 
-
+    /**
+     * @return Yii\db\ActiveQuery
+     */
     private function executeQuery()
     {
         foreach ($this->_filters as $key => $filter) {
             $this->_query = $filter->executeQuery($this->_query);
         }
+
+        return $this->_query;
     }
 
-    public function render($panelTitle = '', $columnCount = 3)
+    /**
+     * @param string $panelTitle
+     * @param int $column
+     * @return string
+     */
+    public function render($panelTitle = '', $column = 3)
     {
         $view_file = Yii::$app->basePath . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'advancedfilter' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . '_filter_panel_form.php';
-        return Yii::$app->controller->renderFile($view_file, array('panelTitle' => $panelTitle, 'columnCount' => $columnCount, 'filters' => $this->_filters));
+        return Yii::$app->controller->renderFile($view_file, array('panelTitle' => $panelTitle, 'column' => $column, 'filters' => $this->_filters));
     }
 
-    #region Add Filter Functions
+    #region Filter Functions
 
     public function addBooleanFilter($attribute, $options = array())
     {
@@ -88,16 +101,12 @@ class FilterFacade
         $this->_filters[$attribute] = new filters\TextFilter($this->_model, $attribute, $escape, $options);
     }
 
-    public function addTextRelationFilter($attribute, $escape = false, $options = array())
-    {
-        $this->_filters[$attribute] = new filters\TextRelationFilter($this->_model, $attribute, $escape, $options);
-    }
-
     public function addTimeFilter($attribute, $options = array())
     {
         $this->_filters[$attribute] = new filters\TimeFilter($this->_model, $attribute, $options);
     }
 
-
     #endregion
+
+
 }

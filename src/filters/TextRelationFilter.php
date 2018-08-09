@@ -2,47 +2,20 @@
 
 namespace advancedfilter\src\filters;
 
-use advancedfilter\src\base\Filter;
-use yii\helpers\Html;
-
 /**
- * Description of TextFilter
+ * Description of TextRelationFilter
  *
  * @author Murat Çelik
  */
-class TextRelationFilter extends Filter
+class TextRelationFilter extends  \advancedfilter\src\filters\TextFilter
 {
-
-    /**
-     * @var Boolean
-     */
-    public $escape = false;
-
-    public function __construct($model, $attribute, $escape = false, $options)
-    {
-        parent::__construct($model, $attribute, $options);
-        $this->escape = $escape;
-    }
-
-    public function renderFilter()
-    {
-        return Html::input('text', $this->getInputName(), $this->getInputValue(), $this->options);
-    }
-
     public function executeQuery($activeQuery)
     {
         if ($this->escape == true) {
-            return $activeQuery->joinWith($this->getRelations())->andFilterWhere(['like', $this->attribute, $this->getInputValue()]);
+            return $activeQuery->joinWith($this->getRelations(),true)->andFilterWhere(['like', $this->getAttributeWithActiveRelation(), $this->getInputValue()]);
         }
         $activeQuery->joinWith($this->getRelations())->andFilterCompare($this->getAttributeWithActiveRelation(), $this->getInputValue());
 
         return $activeQuery;// exit;
     }
-
-
-
-
-
-
-
 }
