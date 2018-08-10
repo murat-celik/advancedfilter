@@ -81,6 +81,11 @@ class FilterFacade
         $this->_filters[$attribute] = new filters\DateFilter($this->_model, $attribute, $options);
     }
 
+    public function addDateIntervalFilter($attribute, $options = array('class'=>'form-control input-sm' ))
+    {
+        $this->_filters[$attribute] = new filters\DateIntervalFilter($this->_model, $attribute, $options);
+    }
+
     public function addDateTimeFilter($attribute, $options = array('class'=>'form-control input-sm' ))
     {
         $this->_filters[$attribute] = new filters\DateTimeFilter($this->_model, $attribute, $options);

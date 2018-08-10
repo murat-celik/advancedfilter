@@ -13,19 +13,46 @@ use yii\helpers\Html;
 
 class DateIntervalFilter extends Filter
 {
-    public function __construct($model, $attribute, $options = array()) {
-        parent::__construct($model, $attribute, $options);
+    public function renderFilter()
+    {
+        return Html::input('date', $this->getInputNameByType('start'), $this->getInputValueByType('start'), $this->options)
+            . '<span class="help-block" style="margin: 0px !important;">start</span>' .
+            Html::input('date', $this->getInputNameByType('finish'), $this->getInputValueByType('finish'), $this->options)
+            . '<span class="help-block" style="margin: 0px !important;">finish</span>';
     }
 
-    public function renderFilter() {
-        return Html::activeInput('date', $this->model, $this->attribute, $this->options);
-    }
-
-    public function executeQuery($activeQuery){
-        if (isset($this->model->{$this->attribute})) {
-            $this->model->{$this->attribute} = date('Y-m-d', strtotime($this->model->{$this->attribute}));
+    public function executeQuery($activeQuery)
+    {
+        $start = $this->getInputValueByType('start');
+        if (isset($start) && $start != '') {
+            $start = date('Y-m-d', strtotime($start));
         }
 
-        return $activeQuery->andFilterCompare($this->attribute, $this->model->{$this->attribute});
+        $finish = $this->getInputValueByType('finish');
+        if (isset($finish) && $finish != '') {
+            $finish = date('Y-m-d', strtotime($finish));
+        }
+        
+        if (isset($start) && isset($finish)) {
+            return $activeQuery->joinWith($this->getRelations())->where(['between', $this->getAttributeWithActiveRelation(), $start, $finish]);
+        }
+
+        return $activeQuery;
+
+    }
+
+    public function getInputNameByType($type)
+    {
+        return $this->getModelName() . '[' . $this->attribute . '_' . $type . ']';
+    }
+
+    public function getInputValueByType($type)
+    {
+        if (isset($_GET[$this->getModelName()][$this->attribute . '_' . $type])) {
+            $value = strip_tags($_GET[$this->getModelName()][$this->attribute . '_' . $type]);
+            //$value = Yii::$app->db->quoteValue($value);
+            return $value;
+        }
+        return null;
     }
 }
