@@ -1,5 +1,7 @@
 # Advancedfilter For Yii2 GridView
 
+Download manuel to application vendor/advancedfilter
+
 Configuration
 
 Add alias to application config 
@@ -33,28 +35,37 @@ class PostSearch extends Post{
     public $filters = array();
 
     public function search($params) {
-        $query = Post::find();,
-        
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
-
-        $this->load($params);
-
-        if (!$this->validate()) {
+    
+       $query = Post::find()->alias('t');
+       
+       $dataProvider = new ActiveDataProvider([
+           'query' => $query,
+       ]);
+       
+       $this->load($params);
+       
+       if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
             return $dataProvider;
-        }
-        
-        $this->filter =  new \advancedfilter\src\FilterFacade($this,$query);
-        
-        $this->filter->addNumericFilter('id_post');
-        $this->filter->addDropDownFilter('id_category', array(1=>'Sea',2=>'Mountain'));
+       }
+       
+       
+       $this->filter = new \advancedfilter\src\FilterFacade($this, $query);
+       
+        // add filters that should always apply here
+       
+        $this->filter->addBooleanFilter('category.id_category');
+        $this->filter->addDateFilter('t.date_add');
+        $this->filter->addDateTimeFilter('t.datetime_publish');
+        $this->filter->addDropDownFilter('category.id_category', array(''=>'',1=>'Sea',2=>'Mountain'));
+        $this->filter->addNumericFilter('category.country.id_country');
         $this->filter->addTextFilter('title');
-        $this->filter->addDateFilter('date_add');
-        $this->filter->addDateTimeFilter('datetime_publish');
-
+        $this->filter->addTextFilter('category.name');
+        $this->filter->addTimeFilter('t.datetime_publish');
+       
         $dataProvider->query = $this->filter->getQuery();
-
+       
         return $dataProvider;
     }
 }
