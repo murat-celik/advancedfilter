@@ -71,37 +71,37 @@ class FilterFacade
 
     #region Filter Functions
 
-    public function addBooleanFilter($attribute, $options = array())
+    public function addBooleanFilter($attribute, $options = array('class'=>'form-control input-sm' ))
     {
         $this->_filters[$attribute] = new filters\BooleanFilter($this->_model, $attribute, $options);
     }
 
-    public function addDateFilter($attribute, $options = array())
+    public function addDateFilter($attribute, $options = array('class'=>'form-control input-sm' ))
     {
         $this->_filters[$attribute] = new filters\DateFilter($this->_model, $attribute, $options);
     }
 
-    public function addDateTimeFilter($attribute, $options = array())
+    public function addDateTimeFilter($attribute, $options = array('class'=>'form-control input-sm' ))
     {
         $this->_filters[$attribute] = new filters\DateTimeFilter($this->_model, $attribute, $options);
     }
 
-    public function addDropDownFilter($attribute, $items = array(), $options = array())
+    public function addDropDownFilter($attribute, $items = array(), $options = array('class'=>'form-control input-sm' ))
     {
         $this->_filters[$attribute] = new filters\DropdownFilter($this->_model, $attribute, $items, $options);
     }
 
-    public function addNumericFilter($attribute, $options = array())
+    public function addNumericFilter($attribute, $options = array('class'=>'form-control input-sm' ))
     {
         $this->_filters[$attribute] = new filters\NumericFilter($this->_model, $attribute, $options);
     }
 
-    public function addTextFilter($attribute, $escape = false, $options = array())
+    public function addTextFilter($attribute, $escape = false, $options = array('class'=>'form-control input-sm' ))
     {
         $this->_filters[$attribute] = new filters\TextFilter($this->_model, $attribute, $escape, $options);
     }
 
-    public function addTimeFilter($attribute, $options = array())
+    public function addTimeFilter($attribute, $options = array('class'=>'form-control input-sm' ))
     {
         $this->_filters[$attribute] = new filters\TimeFilter($this->_model, $attribute, $options);
     }
