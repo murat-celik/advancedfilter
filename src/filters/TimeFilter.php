@@ -23,7 +23,10 @@ class TimeFilter extends Filter
         if (isset($value) && $value != '') {
             $value = date('H:i', strtotime($value));
         }
-        return $activeQuery->joinWith($this->getRelations())->andFilterCompare($this->getAttributeWithActiveRelation(), $value);
+        $attr = $this->getAttributeWithActiveRelation();
+        if ($value) {
+            return $activeQuery->joinWith($this->getRelations())->andWhere("DATE_FORMAT(" . $attr . ", '%H:%i')='$value'");
+        }
+        return $activeQuery;
     }
-
 }
