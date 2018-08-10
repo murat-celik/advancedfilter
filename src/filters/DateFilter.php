@@ -12,20 +12,17 @@ use yii\helpers\Html;
  */
 class DateFilter extends Filter
 {
-
-    public function __construct($model, $attribute, $options = array()) {
-        parent::__construct($model, $attribute, $options);
+    public function renderFilter()
+    {
+        return Html::input('date', $this->getInputName(), $this->getInputValue(), $this->options);
     }
 
-    public function renderFilter() {
-        return Html::activeInput('date', $this->model, $this->attribute, $this->options);
-    }
-
-    public function executeQuery($activeQuery){
-        if (isset($this->model->{$this->attribute})) {
-            $this->model->{$this->attribute} = date('Y-m-d', strtotime($this->model->{$this->attribute}));
+    public function executeQuery($activeQuery)
+    {
+        $value = $this->getInputValue();
+        if (isset($value) && $value != '') {
+            $value = date('Y-m-d', strtotime($value));
         }
-
-        return $activeQuery->andFilterCompare($this->attribute, $this->model->{$this->attribute});
+        return $activeQuery->joinWith($this->getRelations())->andFilterCompare($this->getAttributeWithActiveRelation(), $value);
     }
 }

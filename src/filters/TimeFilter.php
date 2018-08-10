@@ -12,25 +12,18 @@ use yii\helpers\Html;
  */
 class TimeFilter extends Filter
 {
-    public function __construct($model, $attribute, $options = array()) {
-        if (!empty($options)) {
-            $options = array_merge($options, array('class' => 'form-control input-sm', 'type' => 'time'));
-        } else {
-            $options = array('class' => 'form-control input-sm', 'type' => 'time');
-        }
-        parent::__construct($model, $attribute, $options);
+    public function renderFilter()
+    {
+        return Html::input('time', $this->getInputName(), $this->getInputValue(), $this->options);
     }
 
-    public function renderFilter() {
-        return Html::activeTextInput($this->model, $this->attribute, $this->options);
-    }
-
-    public function executeQuery($activeQuery){
-        if (isset($this->model->{$this->attribute})) {
-            $this->model->{$this->attribute} = date('H:i', strtotime($this->model->{$this->attribute}));
+    public function executeQuery($activeQuery)
+    {
+        $value = $this->getInputValue();
+        if (isset($value) && $value != '') {
+            $value = date('H:i', strtotime($value));
         }
-
-        return $activeQuery->andFilterCompare($this->attribute, $this->model->{$this->attribute});
+        return $activeQuery->joinWith($this->getRelations())->andFilterCompare($this->getAttributeWithActiveRelation(), $value);
     }
 
 }

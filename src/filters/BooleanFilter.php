@@ -15,11 +15,11 @@ class BooleanFilter extends Filter
 
     public function renderFilter() {
         $this->options['label']='';
-        return Html::activeCheckbox($this->model,$this->getAttribute(true), $this->options);
+        return Html::checkbox($this->getInputName(),$this->getInputValue(), $this->options);
     }
 
-    public function executeQuery($activeQuery) {
-        return $activeQuery->andFilterCompare($this->getAttribute(), $this->getInputValue());
+    public function executeQuery($activeQuery)
+    {
+        return  $activeQuery->joinWith($this->getRelations())->andFilterCompare($this->getAttributeWithActiveRelation(), $this->getInputValue());
     }
-
 }

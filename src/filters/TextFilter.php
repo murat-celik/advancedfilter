@@ -31,10 +31,10 @@ class TextFilter extends Filter
     public function executeQuery($activeQuery)
     {
         if ($this->escape == true) {
-            return $activeQuery->joinWith($this->getRelations(),true)->andFilterWhere(['like', $this->getAttributeWithActiveRelation(), $this->getInputValue()]);
+            return $activeQuery->joinWith($this->getRelations())->andFilterWhere(['like', $this->getAttributeWithActiveRelation(), $this->getInputValue()]);
         }
         $activeQuery->joinWith($this->getRelations())->andFilterCompare($this->getAttributeWithActiveRelation(), $this->getInputValue());
 
-        return $activeQuery;// exit;
+        return $activeQuery;
     }
 }

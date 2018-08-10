@@ -12,25 +12,23 @@ use yii\helpers\Html;
  */
 class DateTimeFilter extends Filter
 {
-
-    public function __construct($model, $attribute, $options = array()) {
-        if (!empty($options)) {
-            $options = array_merge($options, array('class' => 'form-control input-sm'));
-        } else {
-            $options = array('class' => 'form-control input-sm');
-        }
-        parent::__construct($model, $attribute, $options);
+    public function renderFilter()
+    {
+        return Html::input('datetime-local', $this->getInputName(), $this->getInputValue(), $this->options);
     }
 
-    public function renderFilter() {
-        return Html::activeInput('datetime-local', $this->model, $this->attribute, $this->options);
-    }
-
-    public function executeQuery($activeQuery){
-        if (isset($this->model->{$this->attribute})) {
-            $this->model->{$this->attribute} = date('Y-m-d H:i', strtotime($this->model->{$this->attribute}));
+    public function executeQuery($activeQuery)
+    {
+        $value = $this->getInputValue();
+        if (isset($value) && $value != '') {
+            $value = date('Y-m-d H:i', strtotime($value));
         }
-        return $activeQuery->andFilterCompare($this->attribute, $this->model->{$this->attribute});
+        $attr = $this->getAttributeWithActiveRelation();
+        if ($value){
+            return $activeQuery->joinWith($this->getRelations())->andWhere("DATE_FORMAT(" . $attr . ", '%Y-%m-%d %H:%i')='$value'");
+        }
+        return $activeQuery;
+
     }
 
 }

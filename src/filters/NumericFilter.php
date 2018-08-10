@@ -12,12 +12,13 @@ use yii\helpers\Html;
  */
 class NumericFilter extends Filter
 {
-    public function renderFilter() {
+    public function renderFilter()
+    {
         return Html::input('number', $this->getInputName(), $this->getInputValue(), $this->options);
     }
 
-    public function executeQuery($activeQuery) {
-        return $activeQuery->andFilterCompare($this->attribute, $this->model->{$this->attribute});
+    public function executeQuery($activeQuery)
+    {
+        return $activeQuery->joinWith($this->getRelations())->andFilterCompare($this->getAttributeWithActiveRelation(), $this->getInputValue());
     }
-
 }
