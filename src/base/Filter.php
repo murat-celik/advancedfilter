@@ -112,7 +112,8 @@ abstract class Filter
      */
     public function getRelations()
     {
-        $relations = explode('.', $this->attribute);
+
+        $relations = explode('.',str_replace('t.','',$this->attribute) );
         $last_item = end($relations);
 
         $data = array();
@@ -130,7 +131,7 @@ abstract class Filter
 
         return $data;
     }
-
+    
     /**
      * when attribute = post.author.user.fullname will return return user
      * @return string
@@ -138,6 +139,9 @@ abstract class Filter
     public function getActiveRelation()
     {
         $relations = explode('.', $this->attribute);
+        if (count($relations)==1){
+            return null;
+        }
         $last_item = end($relations);
         $last_item_key = array_search($last_item, $relations);
         unset($relations[$last_item_key]); //unset id_country
@@ -151,6 +155,12 @@ abstract class Filter
      */
     public function getAttributeWithActiveRelation()
     {
+        $active_relation = $this->getActiveRelation();
+
+        if ($active_relation ==null){
+            return $this->getAttribute();
+        }
+
         return $this->getActiveRelation() . '.' . $this->getAttribute();
     }
 
