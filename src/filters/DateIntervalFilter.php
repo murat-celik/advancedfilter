@@ -32,7 +32,7 @@ class DateIntervalFilter extends Filter
         if (isset($finish) && $finish != '') {
             $finish = date('Y-m-d', strtotime($finish));
         }
-        
+
         if (isset($start) && $start!='' && isset($finish) && $finish!='') {
             return $activeQuery->joinWith($this->getRelations())->where(['between', $this->getAttributeWithActiveRelation(), $start, $finish]);
         }

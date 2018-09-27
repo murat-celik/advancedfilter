@@ -144,9 +144,9 @@ abstract class Filter
         }
         $last_item = end($relations);
         $last_item_key = array_search($last_item, $relations);
-        unset($relations[$last_item_key]); //unset id_country
+        unset($relations[$last_item_key]); //unset fullname
 
-        return end($relations); // country
+        return end($relations); // user
     }
 
     /**
